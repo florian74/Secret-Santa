@@ -38,26 +38,23 @@ public class Assignation {
 	}
 	
 	
-	public Assignation asign(List<String> remainingAsignation ) {
+	public Assignation assign(List<String> remainingAssignation, Random r ) {
 		
 		Assignation result = this;
 		
-		//random number generator
-		Random r = new Random( (new Date().getTime()));
-		
 		// continue until we find someone
-		while ( result.name_receiver == null && remainingAsignation.size() > 0) {
+		while ( result.name_receiver == null && remainingAssignation.size() > 0) {
 			
 			if ( 
-				//test if the person can be asign to someone that is not himself or people he doesn't want
-				 ! checkArgument(remainingAsignation, exceptions)
+				//test if the person can be assign to someone that is not himself or people he doesn't want
+				 ! checkArgument(remainingAssignation, exceptions)
 				) {
 				throw new IllegalArgumentException();
 			}
 			
 			//asign to a random person
-			int index = r.nextInt(remainingAsignation.size());
-			this.name_receiver = remainingAsignation.get(index);
+			int index = r.nextInt(remainingAssignation.size());
+			this.name_receiver = remainingAssignation.get(index);
 			
 			
 			//test if we match a valid person, else reset receiver name to continue the loop

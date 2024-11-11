@@ -1,7 +1,6 @@
 package com.secret.santa;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
@@ -27,7 +26,7 @@ public class App
 	        try {
 	        	i++;
 	        	app = new App();
-	        	app.init();
+	        	app.init(new Date().getTime());
 	        	reload = false;
 	        } catch ( IllegalArgumentException e) {
 	        	reload = true;
@@ -65,7 +64,7 @@ public class App
     
 
 
-    public void init() {
+    public void init(long seed) {
     	
     	
     	//GMail sender config
@@ -93,21 +92,26 @@ public class App
     											.except(Roger)
     											.except(Gael));
 		assignations.add(  new Assignation(Gael, "gael.MFS67@gmail.com"));
-
+		
+		assignations.sort((a, b) -> b.exceptions.size() - a.exceptions.size() );
+		
     	//init
     	List<String> destinataires = new ArrayList<String>();
     	for ( Assignation asign : assignations) {
     		destinataires.add(asign.name_buyer);
     	}
+
+		//random number generator
+		Random r = new Random(seed);
     	
-    	//asign
-    	for ( Assignation asign : assignations) {
+    	//assign
+    	for ( Assignation assign : assignations) {
     		
     		for ( int i=0 ; i < assignations.size() ; i++) {
     			
-    			asign.asign(destinataires);
+    			assign.assign(destinataires, r);
     			
-    			destinataires.remove(asign.name_receiver);
+    			destinataires.remove(assign.name_receiver);
     			
     		}
     		
